@@ -30,3 +30,36 @@ Route::fallback(function() {
     return 'Still got somewhere!';
 });
 
+//test
+// Route::get('/fdfdfd', function(){
+//     return 'Hello!';
+// }) ->name('basic');
+
+// Route::get('/class/{studentName}', function($studentName){
+//     return $studentName . ' is a very good student';
+// });
+
+// Route::get('pc/{pcName}', function($pcName){
+//     return 'This ' . $pcName . ' is very powerful that you ever seen.';
+// }) ->name('computer');
+
+
+// Route::get('/home', function(){
+//     return redirect() -> route('basic');
+// });
+
+
+
+// Route::get('/blade', function () {
+//     return view('index', [
+//         'name' => 'Khairul'
+//     ]);
+// });
+
+// Route::get('/song', function(){
+//     return view('index', [
+//         'websiteName' => 'My fav song'
+//     ]);
+// });
+
+
