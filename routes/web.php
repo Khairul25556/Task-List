@@ -2,64 +2,89 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('index', [
-        'name' => 'Khairul'
-    ]);
-});
+class Task
+{
+    public function __construct(
+        public int $id,
+        public string $title,
+        public string $description,
+        public ?string $long_description,
+        public bool $completed,
+        public string $created_at,
+        public string $updated_at
+    ) {}
+}
 
-Route::get('/xxx', function() {
-    return 'Hello';
-}) ->name('hello'); //to implement route name
+$tasks = [
+    new Task(
+        1,
+        'Buy groceries',
+        'Task 1 description',
+        'Task 1 long description',
+        false,
+        '2023-03-01 12:00:00',
+        '2023-03-01 12:00:00'
+    ),
+    new Task(
+        2,
+        'Sell old stuff',
+        'Task 2 description',
+        null,
+        false,
+        '2023-03-02 12:00:00',
+        '2023-03-02 12:00:00'
+    ),
+    new Task(
+        3,
+        'Learn programming',
+        'Task 3 description',
+        'Task 3 long description',
+        true,
+        '2023-03-03 12:00:00',
+        '2023-03-03 12:00:00'
+    ),
+    new Task(
+        4,
+        'Take dogs for a walk',
+        'Task 4 description',
+        null,
+        false,
+        '2023-03-04 12:00:00',
+        '2023-03-04 12:00:00'
+    ),
+];
+
+//index route
+Route::get('/', function() use($tasks){
+    return view('index', [
+        'tasks' => $tasks
+    ]);
+}) ->name('tasks.index');
+
+//to see one single task
+Route::get('/{id}', function($id){
+    return 'One single task';
+}) ->name('tasks.show');
+
+
+// Route::get('/xxx', function () {
+//     return 'Hello';
+// })->name('hello'); //to implement route name
 
 //redirect URL
-Route::get('/hallo', function(){
-    return redirect() -> route('hello'); //it is using the route name. So if we change the get hello url , it wont afttect the redirect because it will follow the nanme
-});
+// Route::get('/hallo', function () {
+//     return redirect()->route('hello'); //it is using the route name. So if we change the get hello url , it wont afttect the redirect because it will follow the nanme
+// });
 
-Route::get('/greet/{name}', function($name){
-    return 'Hello ' . $name . ' !';
-});
+// Route::get('/greet/{name}', function ($name) {
+//     return 'Hello ' . $name . ' !';
+// });
 
-Route::get('/fan/{fanname}', function($fanName){
-    return 'This ' . $fanName . ' is so powerful.';
-});
+// Route::get('/fan/{fanname}', function ($fanName) {
+//     return 'This ' . $fanName . ' is so powerful.';
+// });
 
 //if no other route is matched we can use fallback route
-Route::fallback(function() {
-    return 'Still got somewhere!';
-});
-
-//test
-// Route::get('/fdfdfd', function(){
-//     return 'Hello!';
-// }) ->name('basic');
-
-// Route::get('/class/{studentName}', function($studentName){
-//     return $studentName . ' is a very good student';
+// Route::fallback(function () {
+//     return 'Still got somewhere!';
 // });
-
-// Route::get('pc/{pcName}', function($pcName){
-//     return 'This ' . $pcName . ' is very powerful that you ever seen.';
-// }) ->name('computer');
-
-
-// Route::get('/home', function(){
-//     return redirect() -> route('basic');
-// });
-
-
-
-// Route::get('/blade', function () {
-//     return view('index', [
-//         'name' => 'Khairul'
-//     ]);
-// });
-
-// Route::get('/song', function(){
-//     return view('index', [
-//         'websiteName' => 'My fav song'
-//     ]);
-// });
-
-
