@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 class Task
@@ -22,8 +23,8 @@ $tasks = [
         'Task 1 description',
         'Task 1 long description',
         false,
-        '2023-03-01 12:00:00',
-        '2023-03-01 12:00:00'
+        '2025-03-01 12:00:00',
+        '2025-03-01 12:00:00'
     ),
     new Task(
         2,
@@ -31,8 +32,8 @@ $tasks = [
         'Task 2 description',
         null,
         false,
-        '2023-03-02 12:00:00',
-        '2023-03-02 12:00:00'
+        '2025-03-02 12:00:00',
+        '2025-03-02 12:00:00'
     ),
     new Task(
         3,
@@ -40,8 +41,8 @@ $tasks = [
         'Task 3 description',
         'Task 3 long description',
         true,
-        '2023-03-03 12:00:00',
-        '2023-03-03 12:00:00'
+        '2025-03-03 12:00:00',
+        '2025-03-03 12:00:00'
     ),
     new Task(
         4,
@@ -49,22 +50,44 @@ $tasks = [
         'Task 4 description',
         null,
         false,
-        '2023-03-04 12:00:00',
-        '2023-03-04 12:00:00'
+        '2025-03-04 12:00:00',
+        '2025-03-04 12:00:00'
+    ),
+     new Task(
+        5,
+        'Take drinking water',
+        'Task 5 description',
+        null,
+        false,
+        '2025-03-05 12:00:00',
+        '2025-03-05 12:00:00'
     ),
 ];
 
+Route::get('/', function(){
+    return redirect() ->route('tasks.index');
+});
+
 //index route
-Route::get('/', function() use($tasks){
-    return view('index', [
-        'tasks' => $tasks
-    ]);
+Route::get('/tasks', function() use($tasks){
+    return view('index', ['tasks' => $tasks]);
 }) ->name('tasks.index');
 
 //to see one single task
-Route::get('/{id}', function($id){
-    return 'One single task';
+
+//collect($tasks) this one Converts the regular PHP array $tasks into a Laravel Collection (a more powerful wrapper with extra methods).
+//->firstWhere('id', $id) Loops through all items in the collection. Looks for the first item where the id property matches the $id passed in the URL
+
+Route::get('/tasks/{id}', function($id) use($tasks){
+    $task = collect($tasks) -> firstWhere('id', $id);
+
+    if(!$task){
+        abort(Response::HTTP_NOT_FOUND); //404
+    }
+
+    return view('show', ['task' => $task]);
 }) ->name('tasks.show');
+
 
 
 // Route::get('/xxx', function () {
@@ -85,6 +108,6 @@ Route::get('/{id}', function($id){
 // });
 
 //if no other route is matched we can use fallback route
-// Route::fallback(function () {
-//     return 'Still got somewhere!';
-// });
+Route::fallback(function () {
+    return 'Still got somewhere!';
+});
