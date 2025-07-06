@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mariadb:11
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql  #Data persistence
+
+  adminer:
+    image: adminer:latest  #Pulls the latest Adminer version
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  mysql-data:  #Named volume to store MySQL data
